@@ -1,30 +1,31 @@
 import random
 import base64
 
-def encrypt_data(data, key):
+def encrypt_data(data: bytes, key: str) -> str:
 
-    key = base64.b64decode(key).decode("latin-1")
+    key: bytes = base64.b64decode(key)
 
-    IV = random.randbytes(16).decode("latin-1")
+    IV: bytes = random.randbytes(16)
     
-    data = data + chr(0) * (16 - len(data) % 16) # padding
+    padding_size: bytes = (16 - len(data) % 16).to_bytes()
+    data: bytes = data + (chr(0) * (16 - len(data) % 16)).encode() # padding
     
-    encrypted_data = ""
-    new_iv = IV
+    encrypted_data: bytes = b""
+    new_iv: bytes = IV
 
     for i in range(int(len(data) / 16)):
 
-        encrypted_bloc = ""
-        tmp = ""
+        encrypted_bloc: bytes = b""
+        tmp: bytes = b""
 
         for j in range(16):
-            tmp += chr(ord(data[i * 16 + j]) ^ ord(new_iv[j]))
+            tmp += (data[i * 16 + j] ^ new_iv[j]).to_bytes()
 
         for j in range(16):
-            encrypted_bloc += chr(ord(tmp[j]) ^ ord(key[j]))
+            encrypted_bloc += (tmp[j] ^ key[j]).to_bytes()
     
         encrypted_data += encrypted_bloc
     
-    encrypted_data = IV + encrypted_data
+    encrypted_data = IV + encrypted_data + padding_size
 
-    return base64.b64encode(encrypted_data.encode("latin-1")).decode("latin-1")
+    return base64.b64encode(encrypted_data).decode()

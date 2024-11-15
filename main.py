@@ -9,7 +9,7 @@ args = sys.argv
 print("\n   __                                             \
        \n  / /____ __ _  ___  __ _________ ___ _____  ____ \
        \n / __/ -_)  ' \/ _ \/ // / __/ _ `/\ \ / _ \/ __/   {VERSION 1.0} \
-       \n \__/\__/_/_/_/ .__/\_,_/_/  \_,_//_\_\\___/_/    \
+       \n \__/\__/_/_/_/ .__/\_,_/_/  \_,_//_\_\\\___/_/    \
        \n             /_/                                  \
        \n \
        \n")
@@ -50,8 +50,8 @@ elif args[1] == "-d":
         assert args[5] == "-o", "No such options, check main.py -h for help."
         assert len(args) > 5, "No output file specified."
         try:
-            f = open(args[6], "w")
-            f.write(encrypt.encrypt_data(file, key))
+            f = open(args[6], "wb")
+            f.write(decrypt.decrypt_data(file, key))
             f.close()
             print("Success !")
         except:
@@ -66,8 +66,9 @@ elif args[1] == "-e":
     assert args[3] == "-k", "Bad syntax, check main.py -h for help."
     assert len(args) > 4, "No key specified."
     try:
-        f = open(args[2], "r")
+        f = open(args[2], "rb")
         file = f.read()
+        #print(file)
     except:
         assert False, "Can't open specified file."
     try:
@@ -98,6 +99,7 @@ elif args[1] == "-g":
             f = open(args[3], "w")
             f.write(generate.generate_key())
             f.close()
+            print("Success !")
         except:
             assert False, "Couldn't create file " + args[3] + "."
         

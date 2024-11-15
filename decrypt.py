@@ -1,30 +1,34 @@
 import base64
 
-def decrypt_data(data, key):
+def decrypt_data(data: str, key: str) -> bytes:
     
-    key = base64.b64decode(key).decode("latin-1")
+    key: bytes = base64.b64decode(key)
 
-    data = base64.b64decode(data).decode("latin-1")
+    data: bytes = base64.b64decode(data)
 
-    IV = data[:16]
+    IV: bytes = data[:16]
 
-    decrypted_data = ""
-    new_iv = IV
+    padding_size: int = int.from_bytes(data[-1:])
 
-    for i in range(int((len(data) / 16)) - 1):
+    data = data[16:-1]
+
+    decrypted_data: bytes = b""
+    new_iv: bytes = IV
+
+    for i in range(int((len(data) / 16) - 1)):
         
-        decrypted_bloc = ""
-        tmp = ""
+        decrypted_bloc: bytes = b""
+        tmp: bytes = b""
 
         for j in range(16):
-            tmp += chr(ord(data[(i + 1) * 16 + j]) ^ ord(key[j]))
+            tmp += (data[i * 16 + j] ^ key[j]).to_bytes()
 
         for j in range(16):
-            decrypted_bloc += chr(ord(tmp[j]) ^ ord(new_iv[j]))
+            decrypted_bloc += (tmp[j] ^ new_iv[j]).to_bytes()
 
         decrypted_data += decrypted_bloc
     
-    while ord(decrypted_data[-1]) == 0:
+    for i in range(padding_size):
         decrypted_data = decrypted_data[:-1]
 
     return decrypted_data
