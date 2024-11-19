@@ -27,6 +27,7 @@ def decrypt_data(data: str, key: str) -> bytes:
             decrypted_bloc += (tmp[j] ^ new_iv[j]).to_bytes()
 
         decrypted_data += decrypted_bloc
+        new_iv = data[i * 16:(i + 1) * 16]
     
     for i in range(padding_size):
         decrypted_data = decrypted_data[:-1]
