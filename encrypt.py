@@ -25,7 +25,9 @@ def encrypt_data(data: bytes, key: str) -> str:
             encrypted_bloc += (tmp[j] ^ key[j]).to_bytes()
     
         encrypted_data += encrypted_bloc
+        new_iv = encrypted_bloc
     
     encrypted_data = IV + encrypted_data + padding_size
+    
 
     return base64.b64encode(encrypted_data).decode()
