@@ -1,6 +1,6 @@
 # tempuraxor
 
-This is a school python school project aiming to familiarize with symetrical cypher CBC mode.
+This is a school python school project aiming to familiarize with symetrical cypher.
 
 ## How does it work
 

@@ -8,14 +8,12 @@ def decrypt_data(data: str, key: str) -> bytes:
 
     IV: bytes = data[:16]
 
-    padding_size: int = int.from_bytes(data[-1:])
-
-    data = data[16:-1]
+    data = data[16:]
 
     decrypted_data: bytes = b""
     new_iv: bytes = IV
 
-    for i in range(int((len(data) / 16) - 1)):
+    for i in range(int(len(data) / 16)):
         
         decrypted_bloc: bytes = b""
         tmp: bytes = b""
@@ -28,8 +26,9 @@ def decrypt_data(data: str, key: str) -> bytes:
 
         decrypted_data += decrypted_bloc
         new_iv = data[i * 16:(i + 1) * 16]
+
+    padding_size: int = int.from_bytes(data[-1:])
     
-    for i in range(padding_size):
-        decrypted_data = decrypted_data[:-1]
+    decrypted_data = decrypted_data[:0 - 1 - padding_size]
 
     return decrypted_data
