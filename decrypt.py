@@ -29,6 +29,6 @@ def decrypt_data(data: str, key: str) -> bytes:
 
     padding_size: int = int.from_bytes(data[-1:])
     
-    decrypted_data = decrypted_data[:0 - 1 - padding_size]
+    decrypted_data = decrypted_data[:-padding_size]
 
     return decrypted_data

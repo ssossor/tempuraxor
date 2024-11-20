@@ -7,8 +7,8 @@ def encrypt_data(data: bytes, key: str) -> str:
 
     IV: bytes = random.randbytes(16)
     
-    padding_size: bytes = ((16 - (len(data) + 1) % 16) % 16).to_bytes()
-    data: bytes = data + (chr(0) * ((16 - (len(data) + 1) % 16) % 16)).encode() + padding_size # padding
+    padding_size: bytes = (16 - len(data) % 16).to_bytes()
+    data: bytes = data + (chr(0) * (ord(padding_size) - 1)).encode() + padding_size # padding
     
     encrypted_data: bytes = b""
     new_iv: bytes = IV
